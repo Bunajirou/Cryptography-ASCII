@@ -88,7 +88,9 @@ else:
     n = p * q
     L = math.lcm(p-1, q-1)
     max = max(p, q)
-    e = sympy.randprime(max+1, L)
+    while(True):
+        e = sympy.randprime(max+1, L)
+        if(sympy.gcd(e, L)==1):break
     x = sympy.gcdex(e, L)
     d = int(x[0] % L)
     key = str(n) + " " +str(e)

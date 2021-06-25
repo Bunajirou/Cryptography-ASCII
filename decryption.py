@@ -80,10 +80,10 @@ else:
     min_prime = pow(10, 200)
 
     # p,qを範囲内のランダムな素数で初期化
-    p = sympy.randprime(min_prime, max_prime)
-    q = sympy.randprime(min_prime, max_prime)
-    while(p == q):
+    while(True):
+        p = sympy.randprime(min_prime, max_prime)
         q = sympy.randprime(min_prime, max_prime)
+        if(p != q):break
 
     n = p * q
     L = math.lcm(p-1, q-1)

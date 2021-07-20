@@ -2,13 +2,13 @@ import math
 import sympy
 import pickle
 import os
-import tkinter
+import tkinter as tk
 from tkinter.constants import END
 from tkinter.scrolledtext import ScrolledText
+from tkinter import messagebox
 
 A = 32  # ASCIIコードのA番以降を使う(delも除外) 途中の処理により改行文字も使用可能
 
-# 10進数numをN進数に変換する関数
 def dec_to_N(num,N):
     digit=0
     for i in range(10**9):
@@ -24,7 +24,6 @@ def dec_to_N(num,N):
         num-=(j)*(N**(digit-i))
     return ans
 
-# N進数listを10進数に変換する関数
 def N_to_dec(list, N):
     l=len(list)
     ans=0
@@ -33,7 +32,7 @@ def N_to_dec(list, N):
     return ans
 
 # ウィンドウの作成
-root = tkinter.Tk()
+root = tk.Tk()
 root.title("受信側（復号）")
 root.geometry("560x670")
 
@@ -57,10 +56,10 @@ def write_state():
             pickle.dump(hoka, f)
 
 # チェックボタン作成
-bln = tkinter.BooleanVar()
+bln = tk.BooleanVar()
 bln.set(False)
-chk = tkinter.Checkbutton(root, variable=bln, text='keyを固定', command=write_state)
-chk.place(x=440, y=100)
+chk = tk.Checkbutton(root, variable=bln, text='keyを固定', command=write_state)
+chk.grid(row=0, column=0, padx=10, sticky=tk.E)
 
 # chk_flagをdecryption.pickleを参照し初期化
 if(os.path.exists('./decryption.pickle')):
@@ -104,27 +103,24 @@ else:
 
 # 入出力欄の作成
 key_box = ScrolledText(root, font=("", 10), height=5, width=72)
-key_box.pack()
-key_box.place(x=10, y=31)
+key_box.grid(row=1, column=0, padx=10)
 key_box.insert(1.0, key)
 
 c_box = ScrolledText(root, font=("", 15), height=10, width=50)
-c_box.pack()
-c_box.place(x=10, y=166)
+c_box.grid(row=3, column=0, padx=10)
 
 p_box = ScrolledText(root, font=("", 15), height=10, width=50)
-p_box.pack()
-p_box.place(x=10, y=436)
+p_box.grid(row=6, column=0, padx=10)
 
 # ラベルの作成
-key_label = tkinter.Label(text="key")
-key_label.place(x=10, y=10)
+key_label = tk.Label(text="key")
+key_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
 
-input_label = tkinter.Label(text="暗号文を入力")
-input_label.place(x=10, y=145)
+input_label = tk.Label(text="暗号文を入力")
+input_label.grid(row=2,column=0, padx=10, pady=5, sticky=tk.W)
 
-p_label = tkinter.Label(text="平文")
-p_label.place(x=10, y=415)
+p_label = tk.Label(text="平文")
+p_label.grid(row=5, column=0, padx=10, pady=5, sticky=tk.W)
 
 # 復号処理
 def decryption():
@@ -134,6 +130,10 @@ def decryption():
 
     c_ascii_list = []
     for i in c_txt_list:  # ASCIIコードへ変換
+        if(ord(i)>=128):
+            messagebox.showerror('エラー','使用できない文字が含まれています')
+            p_box.delete(1.0, END)
+            break
         if(ord(i)==10):
             c_ascii_list.append(95)
         else:
@@ -153,23 +153,16 @@ def decryption():
     p_box.delete(1.0, END)
     p_box.insert(1.0, p_txt)
 
-# クリップボード処理
-def set_key():
-    root.clipboard_append(key)
-
 # 入力欄クリア処理
 def c_delete():
     c_box.delete(1.0, END)
 
 # ボタンの作成
-key_button = tkinter.Button(text="keyの値をクリップボードにコピー",command=set_key)
-key_button.place(x=10, y=105)
+decry_button = tk.Button(text="復号実行",command=decryption)
+decry_button.grid(row=4, column=0, padx=13, pady=5, sticky=tk.W)
 
-decry_button = tkinter.Button(text="復号実行",command=decryption)
-decry_button.place(x=10, y=375)
-
-c_del_button = tkinter.Button(text="クリア",command=c_delete)
-c_del_button.place(x=480, y=375)
+c_del_button = tk.Button(text="クリア",command=c_delete)
+c_del_button.grid(row=4, column=0, padx=13, pady=5, sticky=tk.E)
 
 
 root.mainloop()

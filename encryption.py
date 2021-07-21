@@ -1,14 +1,12 @@
 import pickle
-import tkinter
 import os
+import tkinter as tk
 from tkinter import messagebox
 from tkinter.constants import END
 from tkinter.scrolledtext import ScrolledText
 from functools import partial
 
-A = 32  # ASCIIコードのA番以降を使う(delも除外) 途中の処理により改行文字も使用可能
 
-# 10進数numをN進数に変換する関数
 def dec_to_N(num,N):
     digit=0
     for i in range(10**9):
@@ -24,18 +22,13 @@ def dec_to_N(num,N):
         num-=(j)*(N**(digit-i))
     return ans
 
-# N進数listを10進数に変換する関数
+
 def N_to_dec(list, N):
     l=len(list)
     ans=0
     for i in range(1,l+1):
         ans+=list[-i]*(N**(i-1))
     return ans
-
-# ウィンドウの作成
-root = tkinter.Tk()
-root.title("送信側（暗号化）")
-root.geometry("560x670")
 
 # チェックボタンの状態とkeyをencryption.pickleに書き込む関数
 def write_state():
@@ -55,47 +48,7 @@ def write_state():
             pickle.dump(chk_flag, f)
             pickle.dump(key, f)
 
-# チェックボタン作成
-bln = tkinter.BooleanVar()
-bln.set(False)
-chk = tkinter.Checkbutton(root, variable=bln, text='keyを保存', command=write_state)
-chk.place(x=440, y=9)
 
-# 入出力欄の作成
-key_box = ScrolledText(root, font=("", 10), height=5, width=72)
-key_box.pack()
-key_box.place(x=10, y=31)
-
-p_box = ScrolledText(root, font=("", 15), height=10, width=50)
-p_box.pack()
-p_box.place(x=10, y=166)
-
-c_box = ScrolledText(root, font=("", 15), height=10, width=50)
-c_box.pack()
-c_box.place(x=10, y=436)
-
-# ラベルの作成
-key_label = tkinter.Label(text="keyを入力")
-key_label.place(x=10, y=10)
-
-p_label = tkinter.Label(text="平文を入力")
-p_label.place(x=10, y=145)
-
-c_label = tkinter.Label(text="暗号文")
-c_label.place(x=10, y=415)
-
-# chk_flagをencryption.pickleを参照し初期化
-if(os.path.exists('./encryption.pickle')):
-    with open('encryption.pickle', mode='rb') as f:
-        chk_flag = pickle.load(f)
-        key = pickle.load(f)
-    if(chk_flag == 1):
-        key_box.insert(1.0, key)
-        bln.set(True)
-else:
-    chk_flag = 0
-
-# ボタンクリック時の動作
 def encryption(x):
     key_txt = key_box.get(1.0,END)
     key_txt = key_txt[:-1]
@@ -105,7 +58,7 @@ def encryption(x):
     try:
         n, e = map(int, key_txt.split())
     except:
-        messagebox.showwarning("エラー","keyが間違っています。")
+        messagebox.showwarning("エラー","公開鍵が正しくありません。")
     P = n + 1
     p_txt = p_box.get(1.0, END)
 
@@ -140,30 +93,70 @@ def encryption(x):
     else:
         messagebox.showwarning("エラー","平文が長すぎます。")
 
-# 入力欄クリア処理
+
 def key_delete():
     key_box.delete(1.0, END)
-def p_delete():
+
+
+def box_delete():
     p_box.delete(1.0, END)
+    c_box.delete(1.0, END)
 
-# クリップボード処理（保留）-----------------------
-#def set_c():
-#    root.clipboard_append(encryption(0))
-#------------------------------------------------
 
-# ボタンの作成
-key_del_button = tkinter.Button(text="クリア",command=key_delete)
-key_del_button.place(x=480, y=105)
+if __name__ == '__main__':
+    A = 32  # ASCIIコードのA番以降を使用
 
-encry_button = tkinter.Button(text="暗号化実行",command=partial(encryption, 1))
-encry_button.place(x=10, y=375)
+    # ウィンドウの作成
+    root = tk.Tk()
+    root.title("送信側（暗号化）")
+    root.geometry("540x670")
 
-p_del_button = tkinter.Button(text="クリア",command=p_delete)
-p_del_button.place(x=480, y=375)
+    # チェックボタン作成
+    bln = tk.BooleanVar()
+    bln.set(False)
+    chk = tk.Checkbutton(root, variable=bln, text='公開鍵を保存する', command=write_state)
+    chk.grid(row=0, column=0, padx=10, sticky=tk.E)
 
-# クリップボードへのコピーが不安定なため保留----------------------------------------
-#copy_button = tkinter.Button(text="暗号文をクリップボードにコピー",command=set_c)
-#copy_button.place(x=10, y=642)
-#-------------------------------------------------------------------------------
+    # 入出力欄の作成
+    key_box = ScrolledText(root, font=("", 10), height=5, width=72)
+    key_box.grid(row=1, column=0, padx=10)
 
-root.mainloop()
+    p_box = ScrolledText(root, font=("", 15), height=10, width=50)
+    p_box.grid(row=4, column=0, padx=10)
+
+    c_box = ScrolledText(root, font=("", 15), height=10, width=50)
+    c_box.grid(row=7, column=0, padx=10)
+
+    # ラベルの作成
+    key_label = tk.Label(text="公開鍵を入力")
+    key_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
+
+    p_label = tk.Label(text="平文を入力")
+    p_label.grid(row=3, column=0, padx=10, pady=5, sticky=tk.W)
+
+    c_label = tk.Label(text="暗号文")
+    c_label.grid(row=6, column=0, padx=10, pady=5, sticky=tk.W)
+
+    # ボタンの作成
+    key_del_button = tk.Button(text="クリア",command=key_delete)
+    key_del_button.grid(row=2, column=0, padx=13, pady=5, sticky=tk.E)
+
+    encry_button = tk.Button(text="暗号化実行",command=partial(encryption, 1))
+    encry_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.W)
+
+    p_del_button = tk.Button(text="クリア",command=box_delete)
+    p_del_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.E)
+
+    # chk_flagをencryption.pickleを参照し初期化
+    if(os.path.exists('./encryption.pickle')):
+        with open('encryption.pickle', mode='rb') as f:
+            chk_flag = pickle.load(f)
+            key = pickle.load(f)
+        if(chk_flag == 1):
+            key_box.insert(1.0, key)
+            bln.set(True)
+    else:
+        chk_flag = 0
+
+
+    root.mainloop()

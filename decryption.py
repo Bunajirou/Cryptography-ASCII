@@ -52,8 +52,8 @@ def write_state():
 
 
 def create_key():
-    max_prime = pow(10, 201)
-    min_prime = pow(10, 200)
+    max_prime = pow(10, 200)
+    min_prime = pow(10, 199)
 
     while(True):
         p = sympy.randprime(min_prime, max_prime)
@@ -90,12 +90,9 @@ def decryption():
             messagebox.showerror('エラー','使用できない文字が含まれています。')
             p_box.delete(1.0, END)
             break
-        if(ord(i)==10):
-            c_ascii_list.append(95)
-        else:
-            c_ascii_list.append(ord(i)-A) 
+        c_ascii_list.append(ord(i)-33) 
 
-    C = N_to_dec(c_ascii_list, 128-A)
+    C = N_to_dec(c_ascii_list, 93)
     P = pow(C, d, n)
     p_ascii_list = dec_to_N(P, 128-A)
 

@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.constants import END
 from tkinter.scrolledtext import ScrolledText
-from functools import partial
 
 
 def dec_to_N(num,N):
@@ -49,7 +48,7 @@ def write_state():
             pickle.dump(key, f)
 
 
-def encryption(x):
+def encryption():
     key_txt = key_box.get(1.0,END)
     key_txt = key_txt[:-1]
     with open('encryption.pickle', mode='wb') as f:
@@ -75,21 +74,16 @@ def encryption(x):
 
     if(P < n):
         C = pow(P, e, n)
-        c_ascii_list = dec_to_N(C, 128-A)
+        c_ascii_list = dec_to_N(C, 93)
 
         c_txt_list = []
         for i in c_ascii_list:  # ASCIIコードを文字へ変換
-            if(i==95):
-                c_txt_list.append(chr(10))  # 改行文字用の処理
-            else:
-                c_txt_list.append(chr(i+A))
+            c_txt_list.append(chr(i+33))
 
         c_txt = (''.join(c_txt_list))  # リスト内の文字を結合
-        if(x==1):
-            c_box.delete(1.0, END)
-            c_box.insert(1.0, c_txt)
-        else:
-            return c_txt
+        c_box.delete(1.0, END)
+        c_box.insert(1.0, c_txt)
+
     else:
         messagebox.showwarning("エラー","平文が長すぎます。")
 
@@ -141,7 +135,7 @@ if __name__ == '__main__':
     key_del_button = tk.Button(text="クリア",command=key_delete)
     key_del_button.grid(row=2, column=0, padx=13, pady=5, sticky=tk.E)
 
-    encry_button = tk.Button(text="暗号化実行",command=partial(encryption, 1))
+    encry_button = tk.Button(text="暗号化実行",command=encryption)
     encry_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.W)
 
     p_del_button = tk.Button(text="クリア",command=box_delete)

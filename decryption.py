@@ -121,8 +121,8 @@ if __name__ == '__main__':
 
     # ウィンドウの作成
     root = tk.Tk()
-    root.title("受信側（復号）")
-    root.geometry("540x670")
+    root.title('受信側（復号）')
+    root.geometry('540x670')
 
     # チェックボタン作成
     bln = tk.BooleanVar()
@@ -140,40 +140,40 @@ if __name__ == '__main__':
 
     # chk_flagの値に応じてkeyの作成
     if (chk_flag == 1):
-        key = str(n) + " " +str(e)
+        key = str(n) + ' ' +str(e)
         bln.set(True)
     else:
         d, n, key = create_key()
 
     # 入出力欄の作成
-    key_box = ScrolledText(root, font=("", 10), height=5, width=72)
+    key_box = ScrolledText(root, font=('', 10), height=5, width=72)
     key_box.grid(row=1, column=0, padx=10)
     key_box.insert(1.0, key)
 
-    c_box = ScrolledText(root, font=("", 15), height=10, width=50)
+    c_box = ScrolledText(root, font=('', 15), height=10, width=50)
     c_box.grid(row=4, column=0, padx=10)
 
-    p_box = ScrolledText(root, font=("", 15), height=10, width=50)
+    p_box = ScrolledText(root, font=('', 15), height=10, width=50)
     p_box.grid(row=7, column=0, padx=10)
 
     # ラベルの作成
-    key_label = tk.Label(text="公開鍵")
+    key_label = tk.Label(text='公開鍵')
     key_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
 
-    input_label = tk.Label(text="暗号文を入力")
+    input_label = tk.Label(text='暗号文を入力')
     input_label.grid(row=3,column=0, padx=10, pady=5, sticky=tk.W)
 
-    p_label = tk.Label(text="平文")
+    p_label = tk.Label(text='平文')
     p_label.grid(row=6, column=0, padx=10, pady=5, sticky=tk.W)
 
     # ボタンの作成
-    key_button = tk.Button(text="公開鍵をクリップボードにコピー",command=set_clip_key)
+    key_button = tk.Button(text='公開鍵をクリップボードにコピー',command=set_clip_key)
     key_button.grid(row=2, column=0, padx=10, pady=5, sticky=tk.W)
 
-    decry_button = tk.Button(text="復号実行",command=decryption)
+    decry_button = tk.Button(text='復号実行',command=decryption)
     decry_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.W)
 
-    c_del_button = tk.Button(text="クリア",command=box_delete)
+    c_del_button = tk.Button(text='クリア',command=box_delete)
     c_del_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.E)
 
 

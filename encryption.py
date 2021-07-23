@@ -57,7 +57,7 @@ def encryption():
     try:
         n, e = map(int, key_txt.split())
     except:
-        messagebox.showwarning("エラー","公開鍵が正しくありません。")
+        messagebox.showwarning('エラー','公開鍵が正しくありません。')
     P = n + 1
     p_txt = p_box.get(1.0, END)
 
@@ -85,7 +85,7 @@ def encryption():
         c_box.insert(1.0, c_txt)
 
     else:
-        messagebox.showwarning("エラー","平文が長すぎます。")
+        messagebox.showwarning('エラー','平文が長すぎます。')
 
 
 def key_delete():
@@ -102,8 +102,8 @@ if __name__ == '__main__':
 
     # ウィンドウの作成
     root = tk.Tk()
-    root.title("送信側（暗号化）")
-    root.geometry("540x670")
+    root.title('送信側（暗号化）')
+    root.geometry('540x670')
 
     # チェックボタン作成
     bln = tk.BooleanVar()
@@ -122,23 +122,23 @@ if __name__ == '__main__':
     c_box.grid(row=7, column=0, padx=10)
 
     # ラベルの作成
-    key_label = tk.Label(text="公開鍵を入力")
+    key_label = tk.Label(text='公開鍵を入力')
     key_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
 
-    p_label = tk.Label(text="平文を入力")
+    p_label = tk.Label(text='平文を入力')
     p_label.grid(row=3, column=0, padx=10, pady=5, sticky=tk.W)
 
-    c_label = tk.Label(text="暗号文")
+    c_label = tk.Label(text='暗号文')
     c_label.grid(row=6, column=0, padx=10, pady=5, sticky=tk.W)
 
     # ボタンの作成
-    key_del_button = tk.Button(text="クリア",command=key_delete)
+    key_del_button = tk.Button(text='クリア',command=key_delete)
     key_del_button.grid(row=2, column=0, padx=13, pady=5, sticky=tk.E)
 
-    encry_button = tk.Button(text="暗号化実行",command=encryption)
+    encry_button = tk.Button(text='暗号化実行',command=encryption)
     encry_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.W)
 
-    p_del_button = tk.Button(text="クリア",command=box_delete)
+    p_del_button = tk.Button(text='クリア',command=box_delete)
     p_del_button.grid(row=5, column=0, padx=13, pady=5, sticky=tk.E)
 
     # chk_flagをencryption.pickleを参照し初期化

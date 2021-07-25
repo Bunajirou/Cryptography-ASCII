@@ -31,8 +31,8 @@ def N_to_dec(list, N):
         ans+=list[-i]*(N**(i-1))
     return ans
 
-# チェックボタンの状態をdecryption.pickleに書き込む関数 (others = [n,e,d])
-def write_state_de():
+
+def write_state_de():  # others -> [n,e,d]
     if bln_de.get():
         with open('decryption.pickle', mode='rb') as f:
             chk_de_flag = pickle.load(f)
@@ -197,11 +197,12 @@ def check_rdo():
         encry_button.grid()
         key_delete()
         box_delete()
-        with open('encryption.pickle', mode='rb') as f:
-            chk_en_flag = pickle.load(f)
-            if(chk_en_flag == 1):
-                key_en = pickle.load(f)
-                key_box.insert(1.0, key_en)
+        if(os.path.exists('./encryption.pickle')):
+            with open('encryption.pickle', mode='rb') as f:
+                chk_en_flag = pickle.load(f)
+                if(chk_en_flag == 1):
+                    key_en = pickle.load(f)
+                    key_box.insert(1.0, key_en)
 
 
 def box_delete():
@@ -220,7 +221,7 @@ if __name__ == '__main__':
 
     # ウィンドウの作成
     root = tk.Tk()
-    root.title("受信側（復号）")
+    root.title("公開鍵暗号")
     root.geometry("540x725")
 
     # チェックボタン作成
@@ -246,6 +247,16 @@ if __name__ == '__main__':
         bln_de.set(True)
     else:
         d, n, key_de = create_key()
+
+    # chk_en_flagをencryption.pickleを参照し初期化
+    if(os.path.exists('./encryption.pickle')):
+        with open('encryption.pickle', mode='rb') as f:
+            chk_en_flag = pickle.load(f)
+            key_en = pickle.load(f)
+        if(chk_en_flag == 1):
+            bln_en.set(True)
+    else:
+        chk_en_flag = 0
 
     # ラジオボタン作成
     mode = tk.IntVar()
@@ -303,17 +314,6 @@ if __name__ == '__main__':
 
     encry_button = tk.Button(text='暗号化実行',command=encryption)
     encry_button.grid(row=8, column=0, padx=13, pady=5, sticky=tk.W)
-
-    # chk_flagをencryption.pickleを参照し初期化
-    if(os.path.exists('./encryption.pickle')):
-        with open('encryption.pickle', mode='rb') as f:
-            chk_en_flag = pickle.load(f)
-            key_en = pickle.load(f)
-        if(chk_en_flag == 1):
-            key_box.insert(1.0, key_en)
-            bln_en.set(True)
-    else:
-        chk_en_flag = 0
 
     check_rdo()
 

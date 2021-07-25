@@ -32,7 +32,7 @@ def N_to_dec(list, N):
     return ans
 
 
-def write_state_de():  # others -> [n,e,d]
+def write_state_de():  # others = [n,e,d]
     if bln_de.get():
         with open('decryption.pickle', mode='rb') as f:
             chk_de_flag = pickle.load(f)
@@ -284,7 +284,7 @@ if __name__ == '__main__':
 
     en_in_label = tk.Label(text='平文を入力')
     en_in_label.grid(row=6,column=0, padx=10, pady=5, sticky=tk.W)
-
+    
     en_out_label = tk.Label(text='暗号文')
     en_out_label.grid(row=9, column=0, padx=10, pady=5, sticky=tk.W)
 

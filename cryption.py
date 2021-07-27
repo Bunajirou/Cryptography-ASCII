@@ -128,6 +128,9 @@ def decryption():
 def encryption():
     key_txt = key_box.get(1.0,END)
     key_txt = key_txt[:-1]
+    with open('encryption.pickle', mode='rb') as f:
+            chk_en_flag = pickle.load(f)
+            pickle.load(f)
     with open('encryption.pickle', mode='wb') as f:
             pickle.dump(chk_en_flag, f)
             pickle.dump(key_txt, f)

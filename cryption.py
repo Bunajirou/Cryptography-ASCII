@@ -145,7 +145,11 @@ def encryption():
 
     p_ascii_list = []
     for i in p_txt_list:  # ASCIIコードへ変換（改行文字の場合95をリストへ追加）
-        if(ord(i)==10):
+        if(ord(i)>=128):
+            messagebox.showerror('エラー','使用できない文字が含まれています。')
+            output_box.delete(1.0, END)
+            break
+        elif(ord(i)==10):
             p_ascii_list.append(95) 
         else:
             p_ascii_list.append(ord(i)-A) 
